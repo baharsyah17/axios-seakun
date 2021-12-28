@@ -26,10 +26,13 @@
             <p class="font-semibold md:font-normal">
               {{ data.name }}
             </p>
-            <p class="font-bold">
-              Rp{{ data.price }}
-              <span class="text-xl font-light"> / bln</span>
-            </p>
+            <div class="flex font-bold">
+              <div>Rp {{ formatPrice(data.price) }}</div>
+              <div class="text-xl font-light">
+                <div v-if="data.type === 'monthly'">/bln</div>
+                <div v-else>/thn</div>
+              </div>
+            </div>
           </div>
         </div>
         <p
@@ -62,6 +65,12 @@ export default {
     packages: {
       type: Object,
       default: {},
+    },
+  },
+  methods: {
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
   },
 };
